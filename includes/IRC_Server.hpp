@@ -17,7 +17,7 @@
 #include <map>
 
 
-#define PORT "9034"   // port we're listening on
+// #define PORT "9034"   // port we're listening on
 
 // senc eli
 
@@ -27,7 +27,9 @@ class IRC_Server
         // IRC_Server(const std::string& v1, const std::string& v2);
         IRC_Server(const char *port, const char *password);
         ~IRC_Server();
-        // void initStruct(void);
+        // void initStruct(void);+
+
+        Channel *createChannel(const std::string& name, const std::string& pass);
 
     private:
         unsigned short _port;

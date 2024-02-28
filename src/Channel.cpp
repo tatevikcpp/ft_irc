@@ -1,8 +1,9 @@
 #include "Channel.hpp"
 
-Channel::Channel(const std::string& name)
+Channel::Channel(const std::string& name, const std::string& pass) : _name(name), _pass(pass)
 {
-    this->_name = name;
+//     this->_name = name;
+//     this->_pass = pass;
 }
 
 ~Channel()

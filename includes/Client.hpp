@@ -17,7 +17,10 @@ class Client
         };
 
         const int _fd
-        void joinToChannel(Channel *channel, )
+        void joinToChannel(Channel *channel);
+        void leavingChannels(Channel *channel /*,  lalala */);
+        void sending(const std::string& message);
+        void reply(const std::string& message);
         
     private:
 

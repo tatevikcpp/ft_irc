@@ -31,6 +31,13 @@ IRC_Server::~IRC_Server()
 }
 
 
+Channel* Server::createChannel(const std::string& name, const std::string& pass)
+{
+    Channel *new_channel = new Channel(name, pass);
+    this->_channels.insert(new_channel);
+    return (new_channel);
+}
+
 // server mekic aveli clientneri hamar
 
 void *get_in_addr(struct sockaddr *sa)

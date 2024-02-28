@@ -5,7 +5,7 @@
 class Channel
 {
     public:
-        Channel(const std::string& name);
+        Channel(const std::string& name, const std::string& pass);
         ~Channel();
 
         void addClient(Client &client);
@@ -22,4 +22,5 @@ class Channel
     private:
         std::map<int, Client *> _client;
         std::string _name;
+        std::string _pass;
 };
