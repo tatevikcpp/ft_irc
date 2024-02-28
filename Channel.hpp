@@ -10,6 +10,13 @@ class Channel
 
         void addClient(Client &client);
         void deleteClient(int client_fd);
+        void joinClient(Client *client);
+        bool isInChannel(Client* client);
+        bool isOperator(Client* client);
+        void sending(Client* C, const std::string& msg, const std::string& cmd);
+        void addOperator(Clinet *clinet);
+        bool channelIsFull(void);
+        bool emptyChannel(void);
         
 
     private:

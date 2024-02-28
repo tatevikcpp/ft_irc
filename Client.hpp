@@ -17,6 +17,7 @@ class Client
         };
 
         const int _fd
+        void joinToChannel(Channel *channel, )
         
     private:
 
