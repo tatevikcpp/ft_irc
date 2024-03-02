@@ -1,7 +1,9 @@
 #pragma once
 #include "Client.hpp"
 #include "IRC_Server.hpp"
+#include <vector>
 
+typedef void (Command::*FUNC)(Client* C);
 
 class Command
 {
@@ -29,6 +31,7 @@ class Command
         // void commandPART(Client *C);    // 14
 
     private:
-        std::map<std::string, func> _commands;
+        std::map<std::string, FUNC> _commands;
         // IRC_Server *_server;
+        std::vector<std::string> _arg;
 };

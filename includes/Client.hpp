@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <list>
 #include "IRC_Server.hpp"
 
 class IRC_Server;
@@ -21,6 +22,7 @@ class Client
         void leavingChannels(Channel *channel /*,  lalala */);
         void sending(const std::string& message);
         void reply(const std::string& message);
+        void bufferToList(void);
         
     private:
 
@@ -33,7 +35,9 @@ class Client
         std::string _username;
         std::string _hostname;
         std::string _realname;
+        std::string _buffer;
         // TypeClient _clientType;
 
         std::vector<std::string> _arguments;
+        std::List<std::string> _bufferlist;
 };
