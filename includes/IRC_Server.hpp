@@ -31,6 +31,8 @@ class IRC_Server
         // IRC_Server(const std::string& v1, const std::string& v2);
         IRC_Server(const char *port, const char *password);
         ~IRC_Server();
+        void addChannel(Channel *);
+        void addClientToChannel(const std::string& name, Client *);
         int start(void);
         // void initStruct(void);+
 
@@ -40,6 +42,6 @@ class IRC_Server
         unsigned short _port;
         std::string _password;
         struct sockaddr_in _s_addr;
-        std::map<int, Channel *> _channels;
+        std::map<std::string, Channel *> _channels;
         std::map<int, Client *> _clients;
 };

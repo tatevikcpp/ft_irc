@@ -30,6 +30,24 @@ IRC_Server::~IRC_Server()
 
 }
 
+void IRC_Server::addChannel(Channel *channel)
+{
+
+    if (this->_channels.insert(std::make_pair(channel->_name, channel)).second == false)
+    {
+        std::cout << "alredy exist\n";
+    }
+}
+
+void IRC_Server::addClientToChannel(const std::string& name, Client *client)
+{
+    std::map<std::string, Channel *>::iterator  it = this->_channels.find(name);
+    if (it != this->_channels.end())
+    {
+        it->second->joinClient(client);
+    }
+}
+
 
 // Channel* Server::createChannel(const std::string& name, const std::string& pass)
 // {
@@ -127,6 +145,7 @@ int IRC_Server::start(void)
     fdmax = listener; // so far, it's this one
 
     // main loop
+    this->addChannel(new Channel("name"));
     for(;;) 
     {
         read_fds = master; // copy it
@@ -161,7 +180,10 @@ int IRC_Server::start(void)
                         if (newfd > fdmax) {    // keep track of the max
                             fdmax = newfd;
                         }
-                        this->_clients[newfd] = new Client(newfd, remoteaddr);
+                        Client* tmp = new Client(newfd, remoteaddr);
+                        this->_clients[newfd] = tmp;
+                        // this->addChannel()
+                        this->addClientToChannel("name", tmp); // TODO porcnakan
                         std::cout << "new Client(newfd, remoteaddr); = " << newfd << std::endl;
                     }
                 }
@@ -170,6 +192,7 @@ int IRC_Server::start(void)
                     // handle data from a client
                     if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0)
                     {
+                        // TODO heracnel clientin ir irer@ evs
                         // got error or connection closed by client
                         if (nbytes == 0)
                         {
@@ -186,6 +209,7 @@ int IRC_Server::start(void)
                     else 
                     {
                         // we got some data from a client
+                        //TODO parsing anel clienti uxarkac@
                         for(j = 0; j <= fdmax; j++)
                         {
                             // if (ete inch vor Channei-i mej a)
@@ -194,6 +218,12 @@ int IRC_Server::start(void)
                                     // send to everyone!
                                     if (FD_ISSET(j, &master))
                                     {
+                                        // auto it = this->_clients.find(j);
+                                        // if (it != _clients.end())
+                                        // {
+                                        //     std::string channelName = "name"; 
+                                        //     it->second
+                                        // }
                                         // except the listener and ourselves
                                         if (j != listener && j != i)
                                         {
