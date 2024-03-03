@@ -1,9 +1,8 @@
 #include "Client.hpp"
 #include <netinet/in.h>
 
-Client::Client(int fd, const struct sockaddr_in& addr/* , TypeClient */) :_fd(fd)
+Client::Client(int fd, const struct sockaddr& addr) : _fd(fd)
 {
-    this->_fd = fd;
     this->_clientAddr = addr;
 }
 
@@ -15,7 +14,7 @@ Client::~Client()
 void Client::bufferToList(void)
 {
     std::string str = this->_buffer;
-    std::sreing del = "\r\n";
+    std::string del = "\r\n";
     size_t start = 0;
 
     // _bufferlist.clear();

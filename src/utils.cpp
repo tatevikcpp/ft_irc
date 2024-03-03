@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 bool validArgv(std::string port, std::string password)
 {
@@ -32,3 +33,10 @@ bool validArgv(std::string port, std::string password)
     
     return true;
 }
+
+std::string my_to_string(size_t num)
+{
+    std::stringstream str;
+    str << num;
+    return (str.str());
+};

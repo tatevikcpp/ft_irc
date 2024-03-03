@@ -3,6 +3,7 @@
 #include "IRC_Server.hpp"
 #include <vector>
 
+class Command;
 typedef void (Command::*FUNC)(Client* C);
 
 class Command

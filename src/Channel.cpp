@@ -6,7 +6,7 @@ Channel::Channel(const std::string& name, const std::string& pass) : _name(name)
 //     this->_pass = pass;
 }
 
-~Channel()
+Channel::~Channel()
 {
 
 }

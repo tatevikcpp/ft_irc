@@ -1,6 +1,6 @@
 #pragma once
 
-// Numeric replies 
+// Numeric replies
 #define RPL_WELCOME(source)                     "001 " + source + " :Welcome to the ft_irc Network"
 #define RPL_ENDOFWHO(name, source)              "315 " + name + " " + source + " :End of WHO list"
 #define RPL_CHANNELMODEIS(channelName1, channelName2, mode_params) "324 " + channelName1 + " " + channelName2 + " " + " " + mode_params

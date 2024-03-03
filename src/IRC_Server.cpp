@@ -1,5 +1,5 @@
 #include "IRC_Server.hpp"
-
+#include "utils.hpp"
 
 // #include <netinet/in.h>
 // struct in_addr
@@ -31,12 +31,12 @@ IRC_Server::~IRC_Server()
 }
 
 
-Channel* Server::createChannel(const std::string& name, const std::string& pass)
-{
-    Channel *new_channel = new Channel(name, pass);
-    this->_channels.insert(new_channel);
-    return (new_channel);
-}
+// Channel* Server::createChannel(const std::string& name, const std::string& pass)
+// {
+//     Channel *new_channel = new Channel(name, pass);
+//     this->_channels.insert(new_channel);
+//     return (new_channel);
+// }
 
 // server mekic aveli clientneri hamar
 
@@ -49,7 +49,7 @@ void *get_in_addr(struct sockaddr *sa)
     return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-int server_client(void);
+int IRC_Server::start(void)
 {
     fd_set master;    // master file descriptor list
     fd_set read_fds;  // temp file descriptor list for select()
@@ -57,13 +57,13 @@ int server_client(void);
 
     int listener;     // listening socket descriptor
     int newfd;        // newly accept()ed socket descriptor
-    struct sockaddr_storage remoteaddr; // client address
+    struct sockaddr remoteaddr; // client address
     socklen_t addrlen;
 
     char buf[256];    // buffer for client data
     int nbytes;
 
-    char remoteIP[INET6_ADDRSTRLEN];
+    // char remoteIP[INET6_ADDRSTRLEN];
 
     int yes = 1;        // for setsockopt() SO_REUSEADDR, below
     int i, j, rv;
@@ -78,7 +78,7 @@ int server_client(void);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
-    if ((rv = getaddrinfo(NULL, PORT, &hints, &ai)) != 0) 
+    if ((rv = getaddrinfo(NULL, my_to_string(this->_port).c_str(), &hints, &ai)) != 0)
     {
         fprintf(stderr, "selectserver: %s\n", gai_strerror(rv));
         exit(1);
@@ -143,6 +143,7 @@ int server_client(void);
             { // we got one!!
                 if (i == listener) 
                 {
+                    // TODO erb avelanum em nor clientner, miacnum enq serverin
                     // handle new connections
 
                     addrlen = sizeof remoteaddr;
@@ -160,10 +161,11 @@ int server_client(void);
                         if (newfd > fdmax) {    // keep track of the max
                             fdmax = newfd;
                         }
-                        this->_channels[newfd] = new Client(newfd, remoteaddr);
+                        this->_clients[newfd] = new Client(newfd, remoteaddr);
+                        std::cout << "new Client(newfd, remoteaddr); = " << newfd << std::endl;
                     }
-                } 
-                else 
+                }
+                else
                 {
                     // handle data from a client
                     if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0)

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include "Client.hpp"
 #include "Channel.hpp"
@@ -17,19 +19,22 @@
 #include <map>
 
 
-// #define PORT "9034"   // port we're listening on
+
+#define PORT "9034"   // port we're listening on
 
 // senc eli
-
+class Client;
+class Channel;
 class IRC_Server
 {
     public:
         // IRC_Server(const std::string& v1, const std::string& v2);
         IRC_Server(const char *port, const char *password);
         ~IRC_Server();
+        int start(void);
         // void initStruct(void);+
 
-        Channel *createChannel(const std::string& name, const std::string& pass);
+        // Channel *createChannel(const std::string& name, const std::string& pass);
 
     private:
         unsigned short _port;
@@ -37,5 +42,4 @@ class IRC_Server
         struct sockaddr_in _s_addr;
         std::map<int, Channel *> _channels;
         std::map<int, Client *> _clients;
-
 };

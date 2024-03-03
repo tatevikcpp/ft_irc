@@ -4,22 +4,22 @@ TMP = objs
 
 CXX = c++
 
-CXXFLAGS = -std=c++98  -Wall -Wextra -Werror -g -fsanitize=address
+CXXFLAGS = -I./includes -std=c++98  -Wall -Wextra -Werror -g -fsanitize=address
 
 LDFLAGS = -lasan -L/path/to/lib
 
-SRCS = $(wildcard *.cpp)
+SRCS = $(wildcard src/*.cpp)
 
-OBJS = $(patsubst %.cpp, ./$(TMP)/%.o, $(SRCS))
+OBJS = $(patsubst src/%.cpp, ./$(TMP)/%.o, $(SRCS))
 
 RM = rm -fr
 
 HEADER = $(wildcard *.hpp)
 
-./$(TMP)/%.o: %.cpp $(HEADER) Makefile
+./$(TMP)/%.o: src/%.cpp $(HEADER) Makefile
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
-all: $(NAME)
+all: $(NAME) 
 
 $(NAME): $(TMP) $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)

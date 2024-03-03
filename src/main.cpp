@@ -50,6 +50,7 @@ int main(int c, char **v)
     try
     {
         IRC_Server s(v[1], v[2]);
+        s.start();
     }
     catch(const std::exception& e)
     {
