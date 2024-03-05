@@ -44,4 +44,8 @@ class IRC_Server
         struct sockaddr_in _s_addr;
         std::map<std::string, Channel *> _channels;
         std::map<int, Client *> _clients;
+        int _select_fd;
+        int _fdmax;
+        int _listener;
+        int _newfd;
 };
