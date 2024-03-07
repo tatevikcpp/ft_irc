@@ -24,7 +24,7 @@ class Client
 
 
         const int _fd;
-        void leaveChannel(Channel *channel);
+        void leaveChannel(Client *client);
         Channel* createChannel(const std::string& name, const std::string& pass = "");
         // void sending(const std::string& message);
         // void reply(const std::string& message);
