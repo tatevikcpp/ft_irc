@@ -11,6 +11,12 @@ class IRC_Server;
 class Channel;
 class Client
 {
+    enum TypeClient
+    {
+        Owner,
+        Operator,
+        Primary
+    };
     public:
 
         Client(int fd, const struct sockaddr& addr);
@@ -18,17 +24,17 @@ class Client
 
 
         const int _fd;
-        void joinToChannel(Channel *channel);
-        void leavingChannels(Channel *channel);
-        void sending(const std::string& message);
-        void reply(const std::string& message);
-        void bufferToList(void);
+        void leaveChannel(Channel *channel);
+        Channel* createChannel(const std::string& name, const std::string& pass = "");
+        // void sending(const std::string& message);
+        // void reply(const std::string& message);
         
     private:
 
         // std::string _port;
         struct sockaddr _clientAddr;
-        std::map<int, Channel*> _channels;
+        // std::map<std::string, Channel*> _channels;
+        std::map<std::string, std::pair<Channel*, TypeClient> > _channels;
 
 
         std::string _pass;

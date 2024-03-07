@@ -86,7 +86,7 @@ int IRC_Server::start(void)
 
     int yes = 1;        // for setsockopt() SO_REUSEADDR, below
     // int i, j, rv;
-    std::map<int, Client *>::iterator it = this->_clients.begin(); // reference Client(Server) ++this->_clients
+     // reference Client(Server) ++this->_clients
     int rv;
 
     struct addrinfo hints, *ai, *p;
@@ -118,6 +118,7 @@ int IRC_Server::start(void)
 
         if (bind(this->_listener, p->ai_addr, p->ai_addrlen) < 0) 
         {
+            perror("bind: ");
             close(this->_listener);
             continue;
         }
@@ -154,7 +155,6 @@ int IRC_Server::start(void)
         read_fds = master; // copy it
         // _max_fd = _clients.rbegin()->first + 1;
         _select_fd = select(_fdmax, &read_fds, NULL, NULL, NULL);
-
         if (_select_fd == -1)
         {
             std::cout << "stex select" << std::endl;
@@ -163,116 +163,107 @@ int IRC_Server::start(void)
         }
         else if (_select_fd)
         {
-            
-        // }
-
-        // if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) 
-
-        // run through the existing connections looking for data to read
-        for(; it!= this->_clients.end() ; ++it) 
-        {
-    std::cout << "loop" << std::endl;
-            if (FD_ISSET(it->first, &read_fds)) 
-            { // we got one!!
-                if (it->first == this->_listener) 
-                {
+            // run through the existing connections looking for data to read
+            if (FD_ISSET(this->_listener, &read_fds)) 
+            { 
+                // we got one!!
                     // TODO erb avelanum em nor clientner, miacnum enq serverin
                     // handle new connections
 
-                    addrlen = sizeof remoteaddr;
-                    _newfd = accept(this->_listener,
-                        (struct sockaddr *)&remoteaddr,
-                        &addrlen);
+                addrlen = sizeof remoteaddr;
+                _newfd = accept(this->_listener,
+                    (struct sockaddr *)&remoteaddr,
+                    &addrlen);
 
-                    if (_newfd == -1)
-                    {
-                        perror("accept");
-                    }
-                    else if (_newfd)
-                    {
-                        std::cout << "client connect" << std::endl;
-                        if (fcntl(it->first, F_SETFL, O_NONBLOCK) == -1)
-                        {
-                            close(this->_listener);
-                            std::cout << "Error: setting client fd to non-blocking mode failed!" << std::endl;
-                        }
-
-                        FD_SET(_newfd, &master);
-                         // add to master set
-                        if (_newfd > _fdmax) 
-                        {    // keep track of the max
-                            _fdmax = _newfd;
-                        }
-                        Client* tmp = new Client(_newfd, remoteaddr);
-                        this->_clients[_newfd] = tmp;
-                        // this->addChannel()
-                        this->addClientToChannel("name", tmp); // TODO porcnakan
-                        std::cout << "new Client(_newfd, remoteaddr); = " << _newfd << std::endl;
-                    }
-                }
-                else
+                if (_newfd == -1)
                 {
-                    // int sizeBuff = 0;
-                    // char buffer[1025] = {0};
-                    // std::map<int, Client *>::iterator it = ++this->_clients.begin();
-                    // handle data from a client
-                    for(; it != this->_clients.end(); ++it)
+                    perror("accept");
+                }
+                else if (_newfd)
+                {
+                    std::cout << "client connect" << std::endl;
+                    if (fcntl(this->_listener, F_SETFL, O_NONBLOCK) == -1)
                     {
-                        if (FD_ISSET(it->first, &master))
+                        close(this->_listener);
+                        std::cout << "Error: setting client fd to non-blocking mode failed!" << std::endl;
+                    }
+
+                    FD_SET(_newfd, &master);
+                        // add to master set
+                    if (_newfd >= _fdmax) 
+                    {    // keep track of the max
+                        _fdmax = _newfd + 1;
+                    }
+                    Client* tmp = new Client(_newfd, remoteaddr);
+                    this->_clients[_newfd] = tmp;  // adding client to server
+                    // this->addChannel()
+                    // this->addClientToChannel("name", tmp); // TODO porcnakan
+                    std::cout << "new Client(_newfd, remoteaddr); = " << _newfd << std::endl;
+                }
+            }
+            for(std::map<int, Client *>::iterator it = this->_clients.begin();
+                   _select_fd != 0 && it != this->_clients.end() ; ++it)
+            {
+                // std::cout << "loop" << std::endl;
+                if (FD_ISSET(it->first, &read_fds)) 
+                {
+                    _select_fd--;
+                    // we got one!!
+                    // handle data from a client
+                    if ((nbytes = recv(it->first, buf, sizeof buf, 0)) <= 0)
+                    {
+                        // TODO heracnel clientin ir irer@ evs
+                        // got error or connection closed by client
+                        if (nbytes == 0)
                         {
-                            if ((nbytes = recv(it->first, buf, sizeof buf, 0)) <= 0)
-                            {
-                                // TODO heracnel clientin ir irer@ evs
-                                // got error or connection closed by client
-                                // if (nbytes == 0)
-                                // {
-                                    // connection closed
-                                    printf("selectserver: socket %d hung up\n", it->first);
-                                // } 
-                                // else
-                                // {
-                                    perror("recv");
-                                // }
-                                close(it->first); // bye!
-                                FD_CLR(it->first, &master); // remove from master set
-                            } 
-                        }
+                            // connection closed
+                            printf("selectserver: socket %d hung up\n", it->first);
+                        } 
                         else
                         {
-                            std::cout << "lalala" << std::endl;
-                            // we got some data from a client
-                            //TODO parsing anel clienti uxarkac@
-                        //     for(j = 0; j <= _fdmax; j++)
-                        //     {
-                        //         // if (ete inch vor Channei-i mej a)
-                        //         // {
-                        //             {
-                        //                 // send to everyone!
-                        //                 if (FD_ISSET(j, &master))
-                        //                 {
-                        //                     // auto it = this->_clients.find(j);
-                        //                     // if (it != _clients.end())
-                        //                     // {
-                        //                     //     std::string channelName = "name"; 
-                        //                     //     it->second
-                        //                     // }
-                        //                     // except the listener and ourselves
-                        //                     if (j != this->_listener && j != i)
-                        //                     {
-                        //                         if (send(j, buf, nbytes, 0) == -1) 
-                        //                         {
-                        //                             std::cout << "stex send" << std::endl;
-                        //                             perror("send");
-                        //                         }
-                        //                         // std::cout<< "lalala\n";
-                        //                     }
-                        //                 }
-                        //             } 
-                        //         // }
-                            }
+                            perror("recv");
                         }
+
+                        close(it->first); // bye!
+                        FD_CLR(it->first, &master); // remove from master set
+                    } 
+                    else
+                    {
+                        std::cout << "lalala" << std::endl;
+                        // we got some data from a client
+                        //TODO parsing anel clienti uxarkac@
+                        // TODO 
+                    //     for(j = 0; j <= _fdmax; j++)
+                    //     {
+                    //         // if (ete inch vor Channei-i mej a)
+                    //         // {
+                    //             {
+                    //                 // send to everyone!
+                    //                 if (FD_ISSET(j, &master))
+                    //                 {
+                    //                     // auto it = this->_clients.find(j);
+                    //                     // if (it != _clients.end())
+                    //                     // {
+                    //                     //     std::string channelName = "name"; 
+                    //                     //     it->second
+                    //                     // }
+                    //                     // except the listener and ourselves
+                    //                     if (j != this->_listener && j != i)
+                    //                     {
+                    //                         if (send(j, buf, nbytes, 0) == -1) 
+                    //                         {
+                    //                             std::cout << "stex send" << std::endl;
+                    //                             perror("send");
+                    //                         }
+                    //                         // std::cout<< "lalala\n";
+                    //                     }
+                    //                 }
+                    //             } 
+                    //         // }
                     }
                 }
+                    // _select_fd--;
+                // TODO  if (FD_ISSET(it->first, &write_fds)) _select_fd--
             }
         }
     }
