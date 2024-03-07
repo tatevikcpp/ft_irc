@@ -1,9 +1,5 @@
 #include "Command.hpp"
 
-// Command::Command()
-// {
-// }
-
 Command::Command(/* Server *server */) /* : _server(server) */
 {
     // FUNC f[] = {&Command::commandPASS, &Command::commandNICK,       // 0, 1

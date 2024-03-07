@@ -24,10 +24,12 @@ class Client
 
 
         const int _fd;
-        void leaveChannel(Client *client);
+        void leaveChannel(const std::string& name);
         Channel* createChannel(const std::string& name, const std::string& pass = "");
         // void sending(const std::string& message);
         // void reply(const std::string& message);
+        std::string getNick(void);
+        void setNick(const std::string& nick);
         
     private:
 

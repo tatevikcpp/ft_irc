@@ -24,15 +24,16 @@ Channel* Client::createChannel(const std::string& name, const std::string& pass)
     return (tmp);
 }
 
-void Client::leaveChannel(Client *client)
+void Client::leaveChannel(const std::string& name)
 {
-    if (this->_channels.find(client->_nick) == this->_channels.end())
+    std::map<std::string, std::pair<Channel*, TypeClient> >::iterator it = this->_channels.find(name);
+    if (it != this->_channels.end())
     {
-        std::cout << "note found" << std::endl;
-        return ;
+        it->second.first->deleteClient(*this);
+        this->_channels.erase(it);  //TODO - ha vor ?
     }
-    this->_channels.erase(this->_channels.find(client->_nick));
 }
+
 
 // void Client::bufferToList(void)
 // {

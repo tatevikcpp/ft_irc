@@ -39,3 +39,8 @@ void Channel::sending(Client* C, const std::string& msg/* , const std::string& c
         it++;
     }
 }
+
+bool Channel::emptyChannel(void)
+{
+    return (this->_client.empty());
+}
