@@ -9,6 +9,7 @@
 #include <map>
 class IRC_Server;
 class Channel;
+
 class Client
 {
     enum TypeClient
@@ -28,8 +29,11 @@ class Client
         Channel* createChannel(const std::string& name, const std::string& pass = "");
         // void sending(const std::string& message);
         // void reply(const std::string& message);
+        bool isRegistered(void);
         std::string getNick(void);
         void setNick(const std::string& nick);
+        void setPASS(const std::string& pass);
+        void setUSER(const std::string& username, const std::string& realname);
         
     private:
 
@@ -48,4 +52,6 @@ class Client
 
         std::vector<std::string> _arguments;
         std::list<std::string> _bufferlist;
+
+        bool _registered;
 };

@@ -38,6 +38,8 @@ class IRC_Server
 
         // Channel *createChannel(const std::string& name, const std::string& pass);
 
+        std::string getPASS(void);
+        Client *getClient(const std::string& nick);
     private:
         unsigned short _port;
         std::string _password;

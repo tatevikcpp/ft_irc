@@ -4,7 +4,7 @@
 #include <vector>
 
 class Command;
-typedef void (Command::*FUNC)(Client* C);
+typedef void (Command::*FUNC)(Client* client);
 
 class Command
 {
@@ -13,26 +13,26 @@ class Command
         ~Command();
 
 
-        void commandHandler(Client* C);
+        void commandHandler(Client* client);
         
-        void commandNICK(Client* C);    // 0
-        void commandPASS(Client* C);    // 1
-        void commandUSER(Client *C);    // 2
-        // void CommandPING(Client *C);    // 3
-        // void CommandPONG(Client *C);    // 4
-        // void CommandCAP(Client *C);     // 5
-        void CommandJOIN(Client *C);    // 6
-        void commandPRIVMSG(Client *C); // 7
-        void commandKICK(Client *C);    // 8
-        void commandINVITE(Client *C);  // 9
-        void commandMODE(Client *C);    // 10
-        // void commandWHO(Client *C);     // 11
-        void commandQUIT(Client *C);    // 12
-        // void commandTOPIC(Client *C);   // 13
-        // void commandPART(Client *C);    // 14
+        void commandNICK(Client* client);    // 0
+        void commandPASS(Client* client);    // 1
+        void commandUSER(Client *client);    // 2
+        // void CommandPING(Client *client);    // 3
+        // void CommandPONG(Client *client);    // 4
+        // void CommandCAP(Client *client);     // 5
+        void CommandJOIN(Client *client);    // 6
+        void commandPRIVMSG(Client *client); // 7
+        void commandKICK(Client *client);    // 8
+        void commandINVITE(Client *client);  // 9
+        void commandMODE(Client *client);    // 10
+        // void commandWHO(Client *client);     // 11
+        void commandQUIT(Client *client);    // 12
+        // void commandTOPIC(Client *client);   // 13
+        // void commandPART(Client *client);    // 14
 
     private:
         std::map<std::string, FUNC> _commands;
-        // IRC_Server *_server;
-        std::vector<std::string> _arg;
+        IRC_Server *_server;
+        std::vector<std::string> _args;
 };

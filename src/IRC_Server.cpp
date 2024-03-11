@@ -31,6 +31,22 @@ IRC_Server::~IRC_Server()
 
 }
 
+std::string IRC_Server::getPASS(void)
+{
+    return (this->_password);
+}
+
+Client * IRC_Server::getClient(const std::string& nick) // TODO esim
+{
+    std::map<std::string, Channei*>::iterator it = this->_channels.find(nick);
+    if (it != this->_channels.end())
+    {
+        return (it->second);
+    }
+    return NULL;
+}
+
+
 void IRC_Server::addChannel(Channel *channel)
 {
 

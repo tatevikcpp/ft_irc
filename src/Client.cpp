@@ -4,11 +4,33 @@
 Client::Client(int fd, const struct sockaddr& addr) : _fd(fd)
 {
     this->_clientAddr = addr;
+    this->_registered = false;
 }
 
 Client::~Client()
 {
 
+}
+
+bool Client::isRegistered(void)
+{
+    return (this->_registered);
+}
+
+void Client::setPASS(const std::string& pass)
+{
+    this->_pass = pass;
+}
+
+void Client::setNick(const std::string& nick)
+{
+    this->_nick = nick;
+}
+
+void Client::setUSER(const std::string& username, const std::string& realname)
+{
+    this->_username = username;
+    this->_realname = realname;
 }
 
 //   std::map<std::string, std::pair<Channel*, TypeClient>>
