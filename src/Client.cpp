@@ -17,6 +17,16 @@ bool Client::isRegistered(void)
     return (this->_registered);
 }
 
+void Client::checkForRegistered(void)
+{
+    if (!_pass.empty() && !_username.empty() && !_nick.empty() && !_registered)
+    {
+        this->_registered = true;
+        //  reply(RPL_WELCOME(_nick));
+    }
+}
+
+
 void Client::setPASS(const std::string& pass)
 {
     this->_pass = pass;

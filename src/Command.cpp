@@ -44,7 +44,7 @@ void Command::commandPASS(Client* client)
         return ;
     }
 
-    std::string password = _arg[0];
+    std::string password = _args[0];
 
     if (password != _server->getPASS())
     {
@@ -56,15 +56,15 @@ void Command::commandPASS(Client* client)
 
 void Command::commandNICK(Client* client)
 {
-    if (_arg.empty())
+    if (_args.empty())
     {
         // ERR_NONICKNAMEGIVEN(C->getNICK());
         return ;
     }
-    std::string nick = _arg[0];
+    std::string nick = _args[0];
 
-    Client* client = _server->getClient(nick);
-    if (client == NULL)
+    Client* Client = _server->getClient(nick);
+    if (Client == NULL)
     {
         // ERR_NICKNAMEINUSE(C->getNICK(), nick);
         return ;
@@ -80,7 +80,7 @@ void Command::commandUSER(Client *client)
         // ERR_ALREADYREGISTERED(C->getNICK());
         return ;
     }
-    if (_arg.size() < 4)
+    if (_args.size() < 4)
     {
         // ERR_NEEDMOREPARAMS(C->getNICK(), "USER");
         return ;
