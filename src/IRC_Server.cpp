@@ -246,6 +246,38 @@ int IRC_Server::start(void)
                     else
                     {
                         std::cout << "lalala" << std::endl;
+                        int i = 0;
+                        while(buf[i])
+                        {
+                            it->second->_buffer += buf[i];
+                            i++; 
+                        }
+
+                        if (it->second->_tmpBuffer.find('\n') != std::string::npos)
+                        {
+                            it->second->splitbuffer();
+                            it->second->setArguments();
+                        }
+
+
+
+                // if (it->second->_tmpBuffer.find('\n') != std::string::npos)
+                // {
+                //     it->second->setInputBuffer(it->second->_tmpBuffer);
+                //     it->second->splitBufferToList();
+                //     it->second->setArguments();
+                //     while (!it->second->getArguments().empty() || !it->second->getCommand().empty())
+                //     {
+                //         _command->commandHandler(it->second);
+                //         it->second->setArguments();
+                //     }
+                //     it->second->_tmpBuffer = "";
+                // }
+
+
+
+
+
                         // we got some data from a client
                         //TODO parsing anel clienti uxarkac@
                         // TODO 

@@ -90,5 +90,18 @@ void Command::commandUSER(Client *client)
 
 void Command::CommandJOIN(Client *client)
 {
+    if (!client->isRegistered())
+    {
+        // ERR_NOTREGISTERED(C->getNICK());
+        return ;
+    }
+
+    if (_args.empty())
+    {
+        // ERR_NEEDMOREPARAMS(C->getNICK(), "JOIN");
+        return ;
+    }
+
+    //eli inch vor baner :D
     
 }

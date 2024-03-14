@@ -35,7 +35,12 @@ class Client
         void setPASS(const std::string& pass);
         void setUSER(const std::string& username, const std::string& realname);
         void checkForRegistered(void);
+        void splitbuffer(void);
+
+        void setArguments(void);
         
+        std::string _buffer;
+
     private:
 
         // std::string _port;
@@ -49,10 +54,9 @@ class Client
         std::string _username;
         std::string _hostname;
         std::string _realname;
-        std::string _buffer;
 
         std::vector<std::string> _arguments;
-        std::list<std::string> _bufferlist;
+        std::list<std::string> _bufferlist; // or std::vector<std::string> _buffervec
 
         bool _registered;
 };

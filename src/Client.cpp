@@ -66,30 +66,36 @@ void Client::leaveChannel(const std::string& name)
     }
 }
 
-
-// void Client::bufferToList(void)
-// {
-//     std::string str = this->_buffer;
-//     std::string del = "\r\n";
-//     size_t start = 0;
-
-//     // _bufferlist.clear();
-//     // if (str.find(del) == std::string::npos)
-//     // {
-//     //     del = '\n';
-//     // }
-    
-//     size_t end = str.find(del);
-
-//     while (end != std::string::npos)
-//     {
-//         _bufferlist.push_back(str.substr(start, end - start));
-//         start = end + del.length();
-//         end = str.find(del, start);
-//     }
-// }
-
 // void Client::joinToChannel(Client *client)
 // {
 //     channel->joinClient()
 // }
+
+
+
+void Client::setArguments(void)
+{
+    
+}
+
+void Client::splitbuffer(void)
+{
+    std::string str = this->_buffer;
+    std::string del = "\r\n";
+    size_t start = 0;
+
+    // _bufferlist.clear();
+    // if (str.find(del) == std::string::npos)
+    // {
+    //     del = '\n';
+    // }
+    
+    size_t end = str.find(del);
+
+    while (end != std::string::npos)
+    {
+        _bufferlist.push_back(str.substr(start, end - start));
+        start = end + del.length();
+        end = str.find(del, start);
+    }
+}
