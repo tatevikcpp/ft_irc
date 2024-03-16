@@ -38,83 +38,83 @@ class Command
 };
 
 
-void Command::CommandJOIN(Client *C)
-{
-    if (!C->isRegistered())
-    {
-        C->reply(ERR_NOTREGISTERED(C->getNICK()));
-        DEBUGGER();
-        return ;
-    }
+// void Command::CommandJOIN(Client *C)
+// {
+//     if (!C->isRegistered())
+//     {
+//         C->reply(ERR_NOTREGISTERED(C->getNICK()));
+//         DEBUGGER();
+//         return ;
+//     }
 
-    if (_arg.empty())
-    {
-        C->reply(ERR_NEEDMOREPARAMS(C->getNICK(), "JOIN"));
-        DEBUGGER();
-        return ;
-    }
+//     if (_arg.empty())
+//     {
+//         C->reply(ERR_NEEDMOREPARAMS(C->getNICK(), "JOIN"));
+//         DEBUGGER();
+//         return ;
+//     }
 
-    if (_arg[0] == "0")
-    {
-        C->leavingForChannels(NULL, "");
-        _server->checkForCloseCannel();
-        DEBUGGER();
-        return ;
-    }
+//     if (_arg[0] == "0")
+//     {
+//         C->leavingForChannels(NULL, "");
+//         _server->checkForCloseCannel();
+//         DEBUGGER();
+//         return ;
+//     }
 
-    DEBUGGER();
-    std::string channelName = _arg[0];
-    std::string pass = _arg.size() > 1 ? _arg[1] : "";
+//     DEBUGGER();
+//     std::string channelName = _arg[0];
+//     std::string pass = _arg.size() > 1 ? _arg[1] : "";
 
-    std::map<std::string, std::string> ch = stringToMap(channelName, pass);
-    for (std::map<std::string, std::string>::iterator it = ch.begin(); it != ch.end(); ++it)
-    {
-        channelName = it->first;
-        DEBUGGER();
-        pass = it->second;
-        if (channelName[0] != '#' && channelName[0] != '&')
-        {
-            C->reply(ERR_BADCHANMASK(C->getNICK(), channelName + static_cast<char>(1)));
-            DEBUGGER();
-            return ;
-        }
-        Channel* channel = _server->getChannel(channelName);
-        if (!channel)
-        {
-            channel = _server->createChannel(channelName, pass);
-            DEBUGGER();
-        }
+//     std::map<std::string, std::string> ch = stringToMap(channelName, pass);
+//     for (std::map<std::string, std::string>::iterator it = ch.begin(); it != ch.end(); ++it)
+//     {
+//         channelName = it->first;
+//         DEBUGGER();
+//         pass = it->second;
+//         if (channelName[0] != '#' && channelName[0] != '&')
+//         {
+//             C->reply(ERR_BADCHANMASK(C->getNICK(), channelName + static_cast<char>(1)));
+//             DEBUGGER();
+//             return ;
+//         }
+//         Channel* channel = _server->getChannel(channelName);
+//         if (!channel)
+//         {
+//             channel = _server->createChannel(channelName, pass);
+//             DEBUGGER();
+//         }
 
-        if (channel->isInChannel(C))
-        {
-            C->reply(ERR_USERONCHANNEL(C->getNICK(), C->getNICK(), channelName + static_cast<char>(1)));
-            DEBUGGER();
-            return ;
-        }
+//         if (channel->isInChannel(C))
+//         {
+//             C->reply(ERR_USERONCHANNEL(C->getNICK(), C->getNICK(), channelName + static_cast<char>(1)));
+//             DEBUGGER();
+//             return ;
+//         }
 
-        if (channel->isInviteOnly())
-        {
-            C->reply(ERR_INVITEONLYCHAN(C->getNICK(), channelName + static_cast<char>(1)));
-            DEBUGGER();
-            return ;
-        }
+//         if (channel->isInviteOnly())
+//         {
+//             C->reply(ERR_INVITEONLYCHAN(C->getNICK(), channelName + static_cast<char>(1)));
+//             DEBUGGER();
+//             return ;
+//         }
 
-        if (channel->channelIsFull())
-        {
-            C->reply(ERR_CHANNELISFULL(C->getNICK(), channelName + static_cast<char>(1)));
-            DEBUGGER();
-            return ;
-        }
+//         if (channel->channelIsFull())
+//         {
+//             C->reply(ERR_CHANNELISFULL(C->getNICK(), channelName + static_cast<char>(1)));
+//             DEBUGGER();
+//             return ;
+//         }
 
-        if (channel->getKey() != pass)
-        {
-            C->reply(ERR_BADCHANNELKEY(C->getNICK(), channelName, "Cannot join channel (+k)"));
-            DEBUGGER();
-            return ;
-        }
-        C->joinToChannel(channel);
+//         if (channel->getKey() != pass)
+//         {
+//             C->reply(ERR_BADCHANNELKEY(C->getNICK(), channelName, "Cannot join channel (+k)"));
+//             DEBUGGER();
+//             return ;
+//         }
+//         C->joinToChannel(channel);
 
         
-        DEBUGGER();
-    }
-}
+//         DEBUGGER();
+//     }
+// }

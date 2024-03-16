@@ -36,72 +36,72 @@ Command::~Command()
 
 }
 
-void Command::commandPASS(Client* client)
-{
-    if (_args.empty())
-    {
-        // ERR_NEEDMOREPARAMS(C->getNICK(), "PASS");
-        return ;
-    }
+// void Command::commandPASS(Client* client)
+// {
+//     if (_args.empty())
+//     {
+//         // ERR_NEEDMOREPARAMS(C->getNICK(), "PASS");
+//         return ;
+//     }
 
-    std::string password = _args[0];
+//     std::string password = _args[0];
 
-    if (password != _server->getPASS())
-    {
-        // ERR_PASSWDMISMATCH (C->getNICK());
-        return ;
-    }
-    client->setPASS(password);
-}
+//     if (password != _server->getPASS())
+//     {
+//         // ERR_PASSWDMISMATCH (C->getNICK());
+//         return ;
+//     }
+//     client->setPASS(password);
+// }
 
-void Command::commandNICK(Client* client)
-{
-    if (_args.empty())
-    {
-        // ERR_NONICKNAMEGIVEN(C->getNICK());
-        return ;
-    }
-    std::string nick = _args[0];
+// void Command::commandNICK(Client* client)
+// {
+//     if (_args.empty())
+//     {
+//         // ERR_NONICKNAMEGIVEN(C->getNICK());
+//         return ;
+//     }
+//     std::string nick = _args[0];
 
-    Client* Client = _server->getClient(nick);
-    if (Client == NULL)
-    {
-        // ERR_NICKNAMEINUSE(C->getNICK(), nick);
-        return ;
-    }
-    client->setNICK(nick);
-}
+//     Client* Client = _server->getClient(nick);
+//     if (Client == NULL)
+//     {
+//         // ERR_NICKNAMEINUSE(C->getNICK(), nick);
+//         return ;
+//     }
+//     client->setNICK(nick);
+// }
 
 
-void Command::commandUSER(Client *client)
-{
-    if (client->isRegistered())
-    {
-        // ERR_ALREADYREGISTERED(C->getNICK());
-        return ;
-    }
-    if (_args.size() < 4)
-    {
-        // ERR_NEEDMOREPARAMS(C->getNICK(), "USER");
-        return ;
-    }
-    client->setUSER(_args[0], _args[3]);
-}
+// void Command::commandUSER(Client *client)
+// {
+//     if (client->isRegistered())
+//     {
+//         // ERR_ALREADYREGISTERED(C->getNICK());
+//         return ;
+//     }
+//     if (_args.size() < 4)
+//     {
+//         // ERR_NEEDMOREPARAMS(C->getNICK(), "USER");
+//         return ;
+//     }
+//     client->setUSER(_args[0], _args[3]);
+// }
 
-void Command::CommandJOIN(Client *client)
-{
-    if (!client->isRegistered())
-    {
-        // ERR_NOTREGISTERED(C->getNICK());
-        return ;
-    }
+// void Command::CommandJOIN(Client *client)
+// {
+//     if (!client->isRegistered())
+//     {
+//         // ERR_NOTREGISTERED(C->getNICK());
+//         return ;
+//     }
 
-    if (_args.empty())
-    {
-        // ERR_NEEDMOREPARAMS(C->getNICK(), "JOIN");
-        return ;
-    }
+//     if (_args.empty())
+//     {
+//         // ERR_NEEDMOREPARAMS(C->getNICK(), "JOIN");
+//         return ;
+//     }
 
-    //eli inch vor baner :D
+//     //eli inch vor baner :D
     
-}
+// }

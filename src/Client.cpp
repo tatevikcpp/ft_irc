@@ -75,7 +75,35 @@ void Client::leaveChannel(const std::string& name)
 
 void Client::setArguments(void)
 {
-    
+    std::string str(_vecBuffer.front());
+    std::string delimiter = " ";
+    std::size_t end = 0;
+    std::size_t i = 0;
+
+    i = str.find(delimiter);
+    if (i != std::string::npos)
+    {
+        this->_command = str.substr(0, i);
+        str = str.substr(i);
+    }
+
+    i = 0;
+    if (!str.empty())
+    {
+        while (str[i] && str[i] == ' ')
+            i++;
+
+        end = str.find(delimiter, i);
+
+        while (end != std::string::npos)
+        {
+            if (str[i] && str[i] == ':')
+            {
+                this->_arguments.push_back(str.substr(i, end - i));
+            }
+        }
+    }
+
 }
 
 void Client::splitbuffer(void)
@@ -84,7 +112,7 @@ void Client::splitbuffer(void)
     std::string del = "\r\n";
     size_t start = 0;
 
-    // _bufferlist.clear();
+    // _vecBuffer.clear();
     // if (str.find(del) == std::string::npos)
     // {
     //     del = '\n';
@@ -94,7 +122,7 @@ void Client::splitbuffer(void)
 
     while (end != std::string::npos)
     {
-        _bufferlist.push_back(str.substr(start, end - start));
+        _vecBuffer.push_back(str.substr(start, end - start));
         start = end + del.length();
         end = str.find(del, start);
     }

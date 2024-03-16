@@ -54,9 +54,12 @@ class Client
         std::string _username;
         std::string _hostname;
         std::string _realname;
+        std::string _command;
+
 
         std::vector<std::string> _arguments;
-        std::list<std::string> _bufferlist; // or std::vector<std::string> _buffervec
+        // std::list<std::string> _bufferlist; // or std::vector<std::string> _buffervec
+        std::vector<std::string> _vecBuffer;
 
         bool _registered;
 };

@@ -38,7 +38,7 @@ std::string IRC_Server::getPASS(void)
 
 Client * IRC_Server::getClient(const std::string& nick) // TODO esim
 {
-    std::map<std::string, Channei*>::iterator it = this->_channels.find(nick);
+    std::map<std::string, Channel*>::iterator it = this->_channels.find(nick);
     if (it != this->_channels.end())
     {
         return (it->second);
@@ -253,8 +253,9 @@ int IRC_Server::start(void)
                             i++; 
                         }
 
-                        if (it->second->_tmpBuffer.find('\n') != std::string::npos)
+                        if (it->second->_buffer.find('\n') != std::string::npos)
                         {
+                            // it->second->setInputBuffer(it->second->_buffer);//TODO kaskaceli => veranayel
                             it->second->splitbuffer();
                             it->second->setArguments();
                         }
@@ -317,3 +318,49 @@ int IRC_Server::start(void)
     }
     return 0;
 }
+
+
+
+// setArguments ()
+
+//   if (!_arguments.empty())
+//         _arguments.clear();
+//     _command = "";
+
+//     if (!_List.empty())
+//     {
+//         std::string str(_List.front());
+//         std::string delimiter = " ";
+//         size_t end = 0;
+//         size_t i;
+//         str += ' ';
+
+//         if (str[0] != ' ')
+//         {
+//             i = str.find(delimiter);
+//             _command = str.substr(0, i);
+//             str = str.substr(i);
+//         }
+//         i = 0;
+//         if (!str.empty())
+//         {
+//             while(str[i] && str[i] == ' ')
+//                 i++;
+//             end = str.find(delimiter, i);
+//             while (end != std::string::npos) 
+//             {
+//                 if (str[i] && str[i] == ':' && str[++i])
+//                 {
+//                     _arguments.push_back(str.substr(i, str.length() - i - 1));
+//                     break ;
+//                 }
+//                 if (str[i]).
+//                     _arguments.push_back(str.substr(i, end - i));
+//                 i = end + 1;
+//                 while(str[i] && str[i] == ' ')
+//                     i++;
+//                 end = str.find(delimiter, i);
+//             }
+//         }
+//         _List.pop_front();          // in list arguments delete first line
+//     }
