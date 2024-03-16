@@ -41,7 +41,8 @@ Client * IRC_Server::getClient(const std::string& nick) // TODO esim
     std::map<std::string, Channel*>::iterator it = this->_channels.find(nick);
     if (it != this->_channels.end())
     {
-        return (it->second);
+        std::cout << "lala" << std::endl;
+        // return (it->second);  // TODO
     }
     return NULL;
 }

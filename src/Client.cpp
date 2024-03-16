@@ -90,9 +90,9 @@ void Client::setArguments(void)
     i = 0;
     if (!str.empty())
     {
-        while (str[i] && str[i] == ' ')
+        // while (str[i] && str[i] == ' ')
+        while (str[i] && str[i] <= 32)
             i++;
-
         end = str.find(delimiter, i);
 
         while (end != std::string::npos)
