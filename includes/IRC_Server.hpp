@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Client.hpp"
 #include "Channel.hpp"
+#include "Command.hpp"
 
 
 // esim e
@@ -25,6 +26,8 @@
 // senc eli
 class Client;
 class Channel;
+class Command;
+
 class IRC_Server
 {
     public:
@@ -50,4 +53,5 @@ class IRC_Server
         int _fdmax;
         int _listener;
         int _newfd;
+        Command* _command;
 };

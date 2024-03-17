@@ -73,38 +73,66 @@ void Client::leaveChannel(const std::string& name)
 
 
 
+
+std::string Client::getCommand(void)
+{
+    return (this->_command);
+}
+
 void Client::setArguments(void)
 {
-    std::string str(_vecBuffer.front());
-    std::string delimiter = " ";
-    std::size_t end = 0;
-    std::size_t i = 0;
-
-    i = str.find(delimiter);
-    if (i != std::string::npos)
+    if (!this->_vecBuffer.empty())
     {
-        this->_command = str.substr(0, i);
-        str = str.substr(i);
-    }
+        std::string str(this->_vecBuffer.front());
+        std::string delimiter = " ";
+        std::size_t end = 0;
+        std::size_t i = 0;
 
-    i = 0;
-    if (!str.empty())
-    {
-        // while (str[i] && str[i] == ' ')
-        while (str[i] && str[i] <= 32)
-            i++;
-        end = str.find(delimiter, i);
-
-        while (end != std::string::npos)
+        i = str.find(delimiter);
+        if (i != std::string::npos)
         {
-            if (str[i] && str[i] == ':')
+            this->_command = str.substr(0, i);
+            std::cout << " his->_command = "<< this->_command << std::endl;
+            str = str.substr(i);
+        }
+
+        i = 0;
+        if (!str.empty())
+        {
+            // while (str[i] && str[i] == ' ')
+            while (str[i] && str[i] <= 32)
+                i++;
+            end = str.find(delimiter, i);
+
+            while (end != std::string::npos)
             {
-                this->_arguments.push_back(str.substr(i, end - i));
+                if (str[i] && str[i] == ':') // TODO
+                {
+                    std::cout << "::= ['@' <tags> SPACE] [':' <source> SPACE] <command> <parameters> <crlf>" << std::endl;
+                    break ;
+                }
+                if (str[i])
+                {
+                    this->_arguments.push_back(str.substr(i, end - i));
+                }
+                i = end + 1;
+                // while (str[i] && str[i] == ' ')
+                while (str[i] && str[i] <= 32)
+                    i++;
+                end = str.find(delimiter, i);
             }
         }
+        // this->_vecBuffer.pop_front();
+        // vec.erase(vec.begin());
+        this->_vecBuffer.erase(_vecBuffer.begin());
     }
-
 }
+
+std::vector<std::string> Client::getArguments(void)
+{
+    return (this->_arguments);
+}
+
 
 void Client::splitbuffer(void)
 {
@@ -112,17 +140,23 @@ void Client::splitbuffer(void)
     std::string del = "\r\n";
     size_t start = 0;
 
-    // _vecBuffer.clear();
-    // if (str.find(del) == std::string::npos)
-    // {
-    //     del = '\n';
-    // }
+    _vecBuffer.clear();
+    if (str.find(del) == std::string::npos)
+        del = '\n';
     
     size_t end = str.find(del);
+    // if (end == std::string::npos)
+    // {
+    //     std::cout << "offofofof" << std::endl;
+    // }
 
     while (end != std::string::npos)
     {
-        _vecBuffer.push_back(str.substr(start, end - start));
+        this->_vecBuffer.push_back(str.substr(start, end - start));
+        if (this->_vecBuffer.empty())
+            std::cout << "vector is empty" << std::endl; 
+        else
+            std::cout << "vector is NOT empty" << std::endl;
         start = end + del.length();
         end = str.find(del, start);
     }

@@ -246,11 +246,12 @@ int IRC_Server::start(void)
                     } 
                     else
                     {
-                        std::cout << "lalala" << std::endl;
+                        std::cout << "sending message" << std::endl;
                         int i = 0;
                         while(buf[i])
                         {
                             it->second->_buffer += buf[i];
+                            // std::cout << " it->second->_buffer "<< it->second->_buffer << std::endl;
                             i++; 
                         }
 
@@ -259,6 +260,12 @@ int IRC_Server::start(void)
                             // it->second->setInputBuffer(it->second->_buffer);//TODO kaskaceli => veranayel
                             it->second->splitbuffer();
                             it->second->setArguments();
+                            while (!it->second->getArguments().empty() || !it->second->getCommand().empty())
+                            {
+                                // std::cout << "face :D" << std::endl;
+                                this->_command->commandHandler(it->second);
+                            }
+
                         }
 
 
@@ -319,49 +326,3 @@ int IRC_Server::start(void)
     }
     return 0;
 }
-
-
-
-// setArguments ()
-
-//   if (!_arguments.empty())
-//         _arguments.clear();
-//     _command = "";
-
-//     if (!_List.empty())
-//     {
-//         std::string str(_List.front());
-//         std::string delimiter = " ";
-//         size_t end = 0;
-//         size_t i;
-//         str += ' ';
-
-//         if (str[0] != ' ')
-//         {
-//             i = str.find(delimiter);
-//             _command = str.substr(0, i);
-//             str = str.substr(i);
-//         }
-//         i = 0;
-//         if (!str.empty())
-//         {
-//             while(str[i] && str[i] == ' ')
-//                 i++;
-//             end = str.find(delimiter, i);
-//             while (end != std::string::npos) 
-//             {
-//                 if (str[i] && str[i] == ':' && str[++i])
-//                 {
-//                     _arguments.push_back(str.substr(i, str.length() - i - 1));
-//                     break ;
-//                 }
-//                 if (str[i]).
-//                     _arguments.push_back(str.substr(i, end - i));
-//                 i = end + 1;
-//                 while(str[i] && str[i] == ' ')
-//                     i++;
-//                 end = str.find(delimiter, i);
-//             }
-//         }
-//         _List.pop_front();          // in list arguments delete first line
-//     }

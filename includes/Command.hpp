@@ -1,9 +1,14 @@
 #pragma once
+
 #include "Client.hpp"
 #include "IRC_Server.hpp"
 #include <vector>
+#include <map>
 
+class Client;
 class Command;
+class IRC_Server;
+
 typedef void (Command::*FUNC)(Client* client);
 
 class Command
@@ -18,9 +23,9 @@ class Command
         void commandNICK(Client* client);    // 0
         void commandPASS(Client* client);    // 1
         void commandUSER(Client *client);    // 2
-        // void CommandPING(Client *client);    // 3
-        // void CommandPONG(Client *client);    // 4
-        // void CommandCAP(Client *client);     // 5
+        void CommandPING(Client *client);    // 3
+        void CommandPONG(Client *client);    // 4
+        void CommandCAP(Client *client);     // 5
         void CommandJOIN(Client *client);    // 6
         void commandPRIVMSG(Client *client); // 7
         void commandKICK(Client *client);    // 8

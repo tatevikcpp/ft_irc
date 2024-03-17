@@ -38,7 +38,9 @@ class Client
         void splitbuffer(void);
 
         void setArguments(void);
+        std::vector<std::string> getArguments(void);
         
+        std::string getCommand(void);
         std::string _buffer;
 
     private:
