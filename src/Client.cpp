@@ -111,9 +111,19 @@ void Client::setArguments(void)
                     std::cout << "::= ['@' <tags> SPACE] [':' <source> SPACE] <command> <parameters> <crlf>" << std::endl;
                     break ;
                 }
+                std::cout << "str = " << str << std::endl;
+                std::cout << "*******" << std::endl; 
                 if (str[i])
                 {
                     this->_arguments.push_back(str.substr(i, end - i));
+                    if (!_arguments.empty())
+                    {
+                        std::vector<std::string>::iterator it = _arguments.begin();
+                        for (; it != _arguments.end(); ++it)
+                            std::cout << *it << " " << std::endl;
+                    }
+                    else
+                        std::cout << "_arguments SET  is empty" << std::endl;
                 }
                 i = end + 1;
                 // while (str[i] && str[i] == ' ')
@@ -130,6 +140,14 @@ void Client::setArguments(void)
 
 std::vector<std::string> Client::getArguments(void)
 {
+    if (!_arguments.empty())
+    {
+        std::vector<std::string>::iterator it = _arguments.begin();
+        for (; it != _arguments.end(); ++it)
+            std::cout << *it << " " << std::endl;
+    }
+    else
+        std::cout << "_arguments is empty" << std::endl;
     return (this->_arguments);
 }
 
@@ -153,10 +171,10 @@ void Client::splitbuffer(void)
     while (end != std::string::npos)
     {
         this->_vecBuffer.push_back(str.substr(start, end - start));
-        if (this->_vecBuffer.empty())
-            std::cout << "vector is empty" << std::endl; 
-        else
-            std::cout << "vector is NOT empty" << std::endl;
+        // if (this->_vecBuffer.empty())
+        //     std::cout << "vector is empty" << std::endl; 
+        // else
+        //     std::cout << "vector is NOT empty" << std::endl;
         start = end + del.length();
         end = str.find(del, start);
     }

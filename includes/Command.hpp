@@ -36,6 +36,9 @@ class Command
         // void commandTOPIC(Client *client);   // 13
         // void commandPART(Client *client);    // 14
 
+
+        void print_vector(std::vector<std::string> _vec);
+
     private:
         std::map<std::string, FUNC> _commands;
         IRC_Server *_server;

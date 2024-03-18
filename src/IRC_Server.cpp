@@ -24,6 +24,8 @@ IRC_Server::IRC_Server(const char *port, const char *password)
     _s_addr.sin_family = AF_INET;
     _s_addr.sin_port = htons(_port);
     _s_addr.sin_addr.s_addr = INADDR_ANY;
+
+    this->_command = new Command();
 }
 
 IRC_Server::~IRC_Server()

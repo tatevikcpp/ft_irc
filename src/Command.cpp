@@ -30,6 +30,19 @@ Command::Command(/* Server *server */) /* : _server(server) */
     // _commands.insert(std::make_pair("PART", f[14]));
 }
 
+//print vector
+
+void Command::print_vector(std::vector<std::string> _vec)
+{
+    if (!_vec.empty())
+    {
+        std::vector<std::string>::iterator it = _vec.begin();
+        for (; it != _vec.end(); ++it)
+            std::cout << *it << " " << std::endl;
+    }
+    else
+        std::cout << "vector is empty" << std::endl;
+}
 
 Command::~Command()
 {
@@ -38,17 +51,16 @@ Command::~Command()
 
 void Command::commandHandler(Client* client)
 {
-    std::cout << "command hendler function" << std::endl;
-    if (client)
-        this->_args = client->getArguments();
-    else 
-        std::cout<< "null 0" << std::endl; 
+    print_vector(client->getArguments());
+    this->_args = client->getArguments();
+    std::cout << std::endl;
     std::string cmd = client->getCommand();
     std::map<std::string, FUNC>::iterator it = this->_commands.begin();
     for( ; it != this->_commands.end(); ++it)
     {
         if (it->first == cmd)
         {
+            // std::cout << "cmd = " << cmd << std::endl;
             (this->*_commands[it->first])(client);
             return ;
         }
@@ -88,16 +100,18 @@ void Command::CommandPONG(Client *client) //TODO
 
 void Command::commandPASS(Client* client)
 {
-    if (_args.empty())
-    {
-        // ERR_NEEDMOREPARAMS(C->getNICK(), "PASS");
-        return ;
-    }
+    // if (_args.empty())
+    // {
+    //     // ERR_NEEDMOREPARAMS(C->getNICK(), "PASS");
+    //     return ;
+    // }
 
-    std::string password = _args[0];
+    std::string password = this->_args[0];
+    // std::cout << "password = " << password << std::endl;
 
     if (password != _server->getPASS())
     {
+    std::cout << "command PASS function " << std::endl;
         // ERR_PASSWDMISMATCH (C->getNICK());
         return ;
     }
