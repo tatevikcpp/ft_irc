@@ -100,27 +100,33 @@ void Client::setArguments(void)
         if (!str.empty())
         {
             // while (str[i] && str[i] == ' ')
-            while (str[i] && str[i] <= 32)
-                i++;
+            // while (str[i] && str[i] <= 32)
+            //     i++;
+            // if (end != std::string::npos)
+            //     std::cout << "end != std::string::npos" << std::endl;
+            // else
+            //     std::cout << "end ==== std::string::npos" << std::endl;
             end = str.find(delimiter, i);
-
             while (end != std::string::npos)
             {
+                while (str[i] && str[i] <= 32)
+                    i++;
                 if (str[i] && str[i] == ':') // TODO
                 {
                     std::cout << "::= ['@' <tags> SPACE] [':' <source> SPACE] <command> <parameters> <crlf>" << std::endl;
                     break ;
                 }
-                std::cout << "str = " << str << std::endl;
-                std::cout << "*******" << std::endl; 
+                std::cout << "str = " << "'" << str[i] << "'" << std::endl;
                 if (str[i])
                 {
+                    std::cout << "str: " << str.substr(i, end - i) << std::endl;
                     this->_arguments.push_back(str.substr(i, end - i));
                     if (!_arguments.empty())
                     {
                         std::vector<std::string>::iterator it = _arguments.begin();
                         for (; it != _arguments.end(); ++it)
-                            std::cout << *it << " " << std::endl;
+                            std::cout << " VECTOR IS: " << *it << " ";
+                // std::cout << "count" << std::endl;
                     }
                     else
                         std::cout << "_arguments SET  is empty" << std::endl;
@@ -140,14 +146,6 @@ void Client::setArguments(void)
 
 std::vector<std::string> Client::getArguments(void)
 {
-    if (!_arguments.empty())
-    {
-        std::vector<std::string>::iterator it = _arguments.begin();
-        for (; it != _arguments.end(); ++it)
-            std::cout << *it << " " << std::endl;
-    }
-    else
-        std::cout << "_arguments is empty" << std::endl;
     return (this->_arguments);
 }
 

@@ -14,9 +14,8 @@ typedef void (Command::*FUNC)(Client* client);
 class Command
 {
     public:
-        Command();
+        Command(IRC_Server *server);
         ~Command();
-
 
         void commandHandler(Client* client);
         

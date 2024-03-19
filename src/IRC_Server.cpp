@@ -25,10 +25,10 @@ IRC_Server::IRC_Server(const char *port, const char *password)
     _s_addr.sin_port = htons(_port);
     _s_addr.sin_addr.s_addr = INADDR_ANY;
 
-    this->_command = new Command();
+    this->_command = new Command(this);
 }
 
-IRC_Server::~IRC_Server()
+IRC_Server::~IRC_Server(/* *this */)
 {
 
 }
@@ -266,6 +266,8 @@ int IRC_Server::start(void)
                             {
                                 // std::cout << "face :D" << std::endl;
                                 this->_command->commandHandler(it->second);
+                                exit(1);
+                                // std::cout << "return " << std::endl;
                             }
 
                         }

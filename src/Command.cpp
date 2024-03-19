@@ -1,6 +1,6 @@
 #include "Command.hpp"
 
-Command::Command(/* Server *server */) /* : _server(server) */
+Command::Command(IRC_Server *server) : _server(server)
 {
     FUNC f[] = {&Command::commandPASS, &Command::commandNICK,       // 0, 1
                  &Command::commandUSER, &Command::CommandPING,      // 2, 3
@@ -98,34 +98,37 @@ void Command::CommandPONG(Client *client) //TODO
     // C->sending(RPL_PING(C->getPrefix(), _arg[0]));
 }
 
-void Command::commandPASS(Client* client)
+void Command::commandPASS(Client* client) //TODO kisat
 {
-    // if (_args.empty())
-    // {
-    //     // ERR_NEEDMOREPARAMS(C->getNICK(), "PASS");
-    //     return ;
-    // }
-
-    std::string password = this->_args[0];
-    // std::cout << "password = " << password << std::endl;
-
-    if (password != _server->getPASS())
+    this->_args = client->getArguments();
+    if (_args.empty())
     {
-    std::cout << "command PASS function " << std::endl;
-        // ERR_PASSWDMISMATCH (C->getNICK());
+        // ERR_NEEDMOREPARAMS(C->getNICK(), "PASS");
         return ;
     }
-    client->setPASS(password);
+
+    std::string password = this->_args[0];
+    if (password != _server->getPASS())
+    {
+        std::cout << "NOT correct password" << std::endl;
+        exit(1);
+        // ERR_PASSWDMISMATCH (C->getNICK());
+        // return ;
+    }
+    std::cout << "correct password" << std::endl;
+    client->setPASS(password); //TODO indz petq a ardyoq ?
 }
 
 void Command::commandNICK(Client* client)
 {
+    this->_args = client->getArguments();
     if (_args.empty())
     {
         // ERR_NONICKNAMEGIVEN(C->getNICK());
         return ;
     }
     std::string nick = _args[0];
+    // std::cout << "nik: " << nick << std::endl;
 
     Client* Client = _server->getClient(nick);
     if (Client == NULL)
