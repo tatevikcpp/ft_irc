@@ -266,7 +266,8 @@ int IRC_Server::start(void)
                             {
                                 // std::cout << "face :D" << std::endl;
                                 this->_command->commandHandler(it->second);
-                                exit(1);
+                                it->second->setArguments();
+                                // exit(1);
                                 // std::cout << "return " << std::endl;
                             }
 

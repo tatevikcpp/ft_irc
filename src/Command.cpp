@@ -1,4 +1,5 @@
 #include "Command.hpp"
+#include "Numeric_and_error_replies.hpp"
 
 Command::Command(IRC_Server *server) : _server(server)
 {
@@ -51,9 +52,9 @@ Command::~Command()
 
 void Command::commandHandler(Client* client)
 {
-    print_vector(client->getArguments());
+    // print_vector(client->getArguments());
     this->_args = client->getArguments();
-    std::cout << std::endl;
+    // std::cout << std::endl;
     std::string cmd = client->getCommand();
     std::map<std::string, FUNC>::iterator it = this->_commands.begin();
     for( ; it != this->_commands.end(); ++it)
@@ -65,7 +66,7 @@ void Command::commandHandler(Client* client)
             return ;
         }
     }
-    // client->reply(ERR_UNKNOWNCOMMAND(client->getNICK(), client->getCommand()));
+    client->reply(ERR_UNKNOWNCOMMAND(client->getNICK(), client->getCommand()));
 }
 
 void Command::CommandCAP(Client *client)
@@ -78,11 +79,11 @@ void Command::CommandPING(Client *client) // TODO
     if (_args.empty())
     {
         (void)*client;
-        // C->reply(ERR_NEEDMOREPARAMS(C->getNICK(), "PING"));
+        client->reply(ERR_NEEDMOREPARAMS(client->getNICK(), "PING"));
         // DEBUGGER();
         return ;
     }
-    // C->sending(RPL_PING(C->getPrefix(), _arg[0]));
+    // client->sending(RPL_PING(C->getPrefix(), _arg[0]));
 }
 
 
@@ -91,11 +92,11 @@ void Command::CommandPONG(Client *client) //TODO
     if (_args.empty())
     {
         (void)*client;
-        // C->reply(ERR_NEEDMOREPARAMS(C->getNICK(), "PONG"));
+        client->reply(ERR_NEEDMOREPARAMS(client->getNICK(), "PONG"));
         // DEBUGGER();
         return ;
     }
-    // C->sending(RPL_PING(C->getPrefix(), _arg[0]));
+    // client->sending(RPL_PING(client->getPrefix(), _arg[0]));
 }
 
 void Command::commandPASS(Client* client) //TODO kisat
@@ -103,19 +104,19 @@ void Command::commandPASS(Client* client) //TODO kisat
     this->_args = client->getArguments();
     if (_args.empty())
     {
-        // ERR_NEEDMOREPARAMS(C->getNICK(), "PASS");
+        client->reply(ERR_NEEDMOREPARAMS(client->getNICK(), "PASS"));
         return ;
     }
 
     std::string password = this->_args[0];
     if (password != _server->getPASS())
     {
-        std::cout << "NOT correct password" << std::endl;
-        exit(1);
-        // ERR_PASSWDMISMATCH (C->getNICK());
-        // return ;
+        // std::cout << "NOT correct password" << std::endl;
+        // exit(1);
+        client->reply(ERR_PASSWDMISMATCH (client->getNICK()));
+        return ;
     }
-    std::cout << "correct password" << std::endl;
+    // std::cout << "correct password" << std::endl;
     client->setPASS(password); //TODO indz petq a ardyoq ?
 }
 
@@ -124,7 +125,7 @@ void Command::commandNICK(Client* client)
     this->_args = client->getArguments();
     if (_args.empty())
     {
-        // ERR_NONICKNAMEGIVEN(C->getNICK());
+        client->reply(ERR_NONICKNAMEGIVEN(client->getNICK()));
         return ;
     }
     std::string nick = _args[0];
@@ -133,7 +134,7 @@ void Command::commandNICK(Client* client)
     Client* Client = _server->getClient(nick);
     if (Client == NULL)
     {
-        // ERR_NICKNAMEINUSE(C->getNICK(), nick);
+        client->reply(ERR_NICKNAMEINUSE(client->getNICK(), nick));
         return ;
     }
     (void)*client;
@@ -145,12 +146,12 @@ void Command::commandUSER(Client *client)
 {
     if (client->isRegistered())
     {
-        // ERR_ALREADYREGISTERED(C->getNICK());
+        // client->reply(ERR_ALREADYREGISTERED(client->getNICK()));
         return ;
     }
     if (_args.size() < 4)
     {
-        // ERR_NEEDMOREPARAMS(C->getNICK(), "USER");
+        // client->reply(ERR_NEEDMOREPARAMS(client->getNICK(), "USER"));
         return ;
     }
     client->setUSER(_args[0], _args[3]);
@@ -160,13 +161,13 @@ void Command::commandUSER(Client *client)
 // {
 //     if (!client->isRegistered())
 //     {
-//         // ERR_NOTREGISTERED(C->getNICK());
+//         // client->reply(ERR_NOTREGISTERED(client->getNICK()));
 //         return ;
 //     }
 
 //     if (_args.empty())
 //     {
-//         // ERR_NEEDMOREPARAMS(C->getNICK(), "JOIN");
+//         // client->reply(ERR_NEEDMOREPARAMS(client->getNICK(), "JOIN"));
 //         return ;
 //     }
 

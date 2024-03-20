@@ -32,6 +32,7 @@ class Client
         bool isRegistered(void);
         std::string getNick(void);
         void setNick(const std::string& nick);
+        std::string getNICK(void);
         void setPASS(const std::string& pass);
         void setUSER(const std::string& username, const std::string& realname);
         void checkForRegistered(void);
@@ -39,6 +40,8 @@ class Client
 
         void setArguments(void);
         std::vector<std::string> getArguments(void);
+
+        void reply(const std::string& reply);
         
         std::string getCommand(void);
         std::string _buffer;

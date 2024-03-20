@@ -92,7 +92,7 @@ void Client::setArguments(void)
         if (i != std::string::npos)
         {
             this->_command = str.substr(0, i);
-            std::cout << " his->_command = "<< this->_command << std::endl;
+            // std::cout << " his->_command = "<< this->_command << std::endl;
             str = str.substr(i);
         }
 
@@ -116,20 +116,20 @@ void Client::setArguments(void)
                     std::cout << "::= ['@' <tags> SPACE] [':' <source> SPACE] <command> <parameters> <crlf>" << std::endl;
                     break ;
                 }
-                std::cout << "str = " << "'" << str[i] << "'" << std::endl;
+                // std::cout << "str = " << "'" << str[i] << "'" << std::endl;
                 if (str[i])
                 {
-                    std::cout << "str: " << str.substr(i, end - i) << std::endl;
+                    // std::cout << "str: " << str.substr(i, end - i) << std::endl;
                     this->_arguments.push_back(str.substr(i, end - i));
-                    if (!_arguments.empty())
-                    {
-                        std::vector<std::string>::iterator it = _arguments.begin();
-                        for (; it != _arguments.end(); ++it)
-                            std::cout << " VECTOR IS: " << *it << " ";
-                // std::cout << "count" << std::endl;
-                    }
-                    else
-                        std::cout << "_arguments SET  is empty" << std::endl;
+                //     if (!_arguments.empty())
+                //     {
+                //         std::vector<std::string>::iterator it = _arguments.begin();
+                //         for (; it != _arguments.end(); ++it)
+                //             std::cout << " VECTOR IS: " << *it << " ";
+                // // std::cout << "count" << std::endl;
+                //     }
+                //     else
+                //         std::cout << "_arguments SET  is empty" << std::endl;
                 }
                 i = end + 1;
                 // while (str[i] && str[i] == ' ')
@@ -176,4 +176,23 @@ void Client::splitbuffer(void)
         start = end + del.length();
         end = str.find(del, start);
     }
+}
+
+
+
+// LA ~ LA ~ LA ~ LA ~ LA ~ LA 
+
+
+void Client::reply(const std::string& reply) // TODO kisat!
+{
+    (void)reply;
+    // std::string buff = ":" + this->getPrefix() + " " + reply + "\r\n";
+
+    // if (send(_fd, buff.c_str(), buff.length(), 0) == -1)
+        std::cerr << "Error: can't send message to client." << std::endl;
+}
+
+std::string Client::getNICK(void)
+{
+    return (this->_nick);
 }
