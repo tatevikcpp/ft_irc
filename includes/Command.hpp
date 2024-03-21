@@ -37,6 +37,7 @@ class Command
 
 
         void print_vector(std::vector<std::string> _vec);
+        bool nickCorrect(const std::string& nick);
 
     private:
         std::map<std::string, FUNC> _commands;

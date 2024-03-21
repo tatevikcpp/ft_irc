@@ -38,17 +38,40 @@ std::string IRC_Server::getPASS(void)
     return (this->_password);
 }
 
-Client * IRC_Server::getClient(const std::string& nick) // TODO esim
+// Client * IRC_Server::getClient(const std::string& nick) // TODO esim
+// {
+//     std::map<std::string, Channel*>::iterator it = this->_channels.find(nick);
+//     if (it != this->_channels.end())
+//     {
+//         std::cout << "lala" << std::endl;
+//         // return (it->second);  // TODO
+//     }
+//     return NULL;
+// }
+
+bool IRC_Server::checkNickname(const std::string& nick) //TODO  std::string offff
 {
-    std::map<std::string, Channel*>::iterator it = this->_channels.find(nick);
-    if (it != this->_channels.end())
+    std::map<std::string, int>::iterator it = this->_nickname.find(nick);
+    if (it == _nickname.end())
     {
-        std::cout << "lala" << std::endl;
-        // return (it->second);  // TODO
+        return false;
     }
-    return NULL;
+    return true;
 }
 
+void IRC_Server::changeNickname(Client *, const std::string& nick) //TODO strategia chka :D  
+{
+    std::map<std::string, int>::iterator it = this->_nickname.find(nick);
+    if (it != this->_nickname.end())
+    {
+        this->_nickname[]
+    }
+    else
+    {
+        std::cout << " arden ka ed nick-ov mard :D" << std::endl;
+        return ; 
+    }
+}
 
 void IRC_Server::addChannel(Channel *channel)
 {

@@ -17,22 +17,39 @@ bool Client::isRegistered(void)
     return (this->_registered);
 }
 
-void Client::checkForRegistered(void)
+// void Client::checkForRegistered(void)
+// {
+//     if (!_pass.empty() && !_username.empty() && !_nick.empty() && !_registered)
+//     {
+//         this->_registered = true;
+//          reply(RPL_WELCOME(_nick));
+//     }
+// }
+
+bool Client::checkForRegistered(void)
 {
     if (!_pass.empty() && !_username.empty() && !_nick.empty() && !_registered)
     {
         this->_registered = true;
-        //  reply(RPL_WELCOME(_nick));
+        reply(RPL_WELCOME(_nick));
     }
+    else
+        this->_registered = false;
+
+    return (this->_registered);
 }
 
+int Client::getFd(void)
+{
+    return ()
+}
 
 void Client::setPASS(const std::string& pass)
 {
     this->_pass = pass;
 }
 
-void Client::setNick(const std::string& nick)
+void Client::setNICK(const std::string& nick) // TODO sending??
 {
     this->_nick = nick;
 }
@@ -185,10 +202,10 @@ void Client::splitbuffer(void)
 
 void Client::reply(const std::string& reply) // TODO kisat!
 {
-    (void)reply;
-    // std::string buff = ":" + this->getPrefix() + " " + reply + "\r\n";
+    // (void)reply;
+    std::string buff = ":" + this->getPrefix() + " " + reply + "\r\n";
 
-    // if (send(_fd, buff.c_str(), buff.length(), 0) == -1)
+    if (send(_fd, buff.c_str(), buff.length(), 0) == -1)
         std::cerr << "Error: can't send message to client." << std::endl;
 }
 
@@ -196,3 +213,31 @@ std::string Client::getNICK(void)
 {
     return (this->_nick);
 }
+
+std::string Client::getPrefix(void)
+{
+    std::string prefix = this->_nick;
+
+    if (!this->_username.empty())
+    {
+        prefix += "!" + this->_username;
+    }
+
+    if (!this->_hostname.empty())
+    {
+        prefix += "@" + this->_hostname;
+    }
+
+    return (prefix); 
+}
+
+// void Client::reply(const std::string& reply)
+// {
+//     std::string buff = ":" + this->getPrefix() + " " + reply + "\r\n";
+
+//     if (send(_fd, buff.c_str(), buff.length(), 0) == -1)
+//         std::cerr << "Error: can't send message to client." << std::endl;
+// }
+
+
+

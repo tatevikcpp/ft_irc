@@ -7,6 +7,10 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <map>
+
+// #include "Command.hpp"
+ #include "Numeric_and_error_replies.hpp"
+
 class IRC_Server;
 class Channel;
 
@@ -31,19 +35,24 @@ class Client
         // void reply(const std::string& message);
         bool isRegistered(void);
         std::string getNick(void);
-        void setNick(const std::string& nick);
+        void setNICK(const std::string& nick);
         std::string getNICK(void);
         void setPASS(const std::string& pass);
         void setUSER(const std::string& username, const std::string& realname);
-        void checkForRegistered(void);
+        // void checkForRegistered(void);
+        bool checkForRegistered(void);
         void splitbuffer(void);
 
         void setArguments(void);
         std::vector<std::string> getArguments(void);
 
+        std::string getPrefix(void);
         void reply(const std::string& reply);
         
         std::string getCommand(void);
+
+        int getFd(void);
+        
         std::string _buffer;
 
     private:

@@ -42,13 +42,18 @@ class IRC_Server
         // Channel *createChannel(const std::string& name, const std::string& pass);
 
         std::string getPASS(void);
-        Client *getClient(const std::string& nick);
+        // Client *getClient(const std::string& nick);
+        bool checkNickname(const std::string& nick);
+        void changeNickname(Client *, const std::string& nick);
+
     private:
         unsigned short _port;
         std::string _password;
         struct sockaddr_in _s_addr;
         std::map<std::string, Channel *> _channels;
         std::map<int, Client *> _clients;
+
+        std::map<std::string, int> _nickname;
         int _select_fd;
         int _fdmax;
         int _listener;

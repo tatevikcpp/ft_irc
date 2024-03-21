@@ -45,6 +45,17 @@ void Command::print_vector(std::vector<std::string> _vec)
         std::cout << "vector is empty" << std::endl;
 }
 
+bool Command::nickCorrect(const std::string& nick)
+{
+    std::string notAllowed = " ,*?!@$:#.";
+    std::size_t pos = nick.find_first_of(notAllowed);
+    if (pos != std::string::npos)
+    {
+        return false;
+    }
+    return true;
+}
+
 Command::~Command()
 {
 
@@ -120,7 +131,7 @@ void Command::commandPASS(Client* client) //TODO kisat
     client->setPASS(password); //TODO indz petq a ardyoq ?
 }
 
-void Command::commandNICK(Client* client)
+void Command::commandNICK(Client* client) //TODO inch piti ani?
 {
     this->_args = client->getArguments();
     if (_args.empty())
@@ -129,16 +140,25 @@ void Command::commandNICK(Client* client)
         return ;
     }
     std::string nick = _args[0];
-    // std::cout << "nik: " << nick << std::endl;
 
-    Client* Client = _server->getClient(nick);
-    if (Client == NULL)
+    if (!nickCorrect(nick))
+    {
+        client->reply(ERR_ERRONEUSNICKNAME(client->getNICK(), nick));
+        return ;
+    }
+
+    if (!this->_server->checkNickname(nick))
     {
         client->reply(ERR_NICKNAMEINUSE(client->getNICK(), nick));
         return ;
     }
-    (void)*client;
-    // client->setNICK(nick);
+
+    if (!client->checkForRegistered())
+    {
+        client->reply(ERR_NICKNAMEINUSE(client->getNICK(), nick));
+        return ;
+    }
+    client->setNICK(nick);
 }
 
 
