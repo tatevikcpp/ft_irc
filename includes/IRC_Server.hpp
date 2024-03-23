@@ -44,7 +44,7 @@ class IRC_Server
         std::string getPASS(void);
         // Client *getClient(const std::string& nick);
         bool checkNickname(const std::string& nick);
-        void changeNickname(Client *, const std::string& nick);
+        void changeNickname(Client *, const std::string& newNick);
 
     private:
         unsigned short _port;

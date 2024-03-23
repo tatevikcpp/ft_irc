@@ -5,12 +5,12 @@ Command::Command(IRC_Server *server) : _server(server)
 {
     FUNC f[] = {&Command::commandPASS, &Command::commandNICK,       // 0, 1
                  &Command::commandUSER, &Command::CommandPING,      // 2, 3
-                 &Command::CommandPONG, &Command::CommandCAP /*,       // 4, 5
+                 &Command::CommandPONG, &Command::CommandCAP ,       // 4, 5
                  &Command::CommandJOIN, &Command::commandPRIVMSG,   // 6, 7
                  &Command::commandKICK, &Command::commandINVITE,    // 8, 9
                  &Command::commandMODE, &Command::commandWHO,       // 10, 11
                  &Command::commandQUIT, &Command::commandTOPIC,     // 12, 13
-                 &Command::commandPART */};                             // 14
+                 &Command::commandPART};                             // 14
 
     // _commands.insert(std::make_pair("", f[]));
     _commands["PASS"] = f[0];
@@ -20,15 +20,15 @@ Command::Command(IRC_Server *server) : _server(server)
     _commands.insert(std::make_pair("PING", f[3]));
     _commands.insert(std::make_pair("PONG", f[4]));
     _commands.insert(std::make_pair("CAP",  f[5]));
-    // _commands.insert(std::make_pair("JOIN",  f[6]));
-    // _commands.insert(std::make_pair("PRIVMSG", f[7]));
-    // _commands.insert(std::make_pair("KICK", f[8]));
-    // _commands.insert(std::make_pair("INVITE", f[9]));
-    // _commands.insert(std::make_pair("MODE", f[10]));
-    // _commands.insert(std::make_pair("WHO", f[11]));
-    // _commands.insert(std::make_pair("QUIT", f[12]));
-    // _commands.insert(std::make_pair("TOPIC", f[13]));
-    // _commands.insert(std::make_pair("PART", f[14]));
+    _commands.insert(std::make_pair("JOIN",  f[6]));
+    _commands.insert(std::make_pair("PRIVMSG", f[7]));
+    _commands.insert(std::make_pair("KICK", f[8]));
+    _commands.insert(std::make_pair("INVITE", f[9]));
+    _commands.insert(std::make_pair("MODE", f[10]));
+    _commands.insert(std::make_pair("WHO", f[11]));
+    _commands.insert(std::make_pair("QUIT", f[12]));
+    _commands.insert(std::make_pair("TOPIC", f[13]));
+    _commands.insert(std::make_pair("PART", f[14]));
 }
 
 //print vector
@@ -94,7 +94,7 @@ void Command::CommandPING(Client *client) // TODO
         // DEBUGGER();
         return ;
     }
-    // client->sending(RPL_PING(C->getPrefix(), _arg[0]));
+    client->sending(RPL_PING(C->getPrefix(), _arg[0]));
 }
 
 
@@ -107,7 +107,7 @@ void Command::CommandPONG(Client *client) //TODO
         // DEBUGGER();
         return ;
     }
-    // client->sending(RPL_PING(client->getPrefix(), _arg[0]));
+    client->sending(RPL_PING(client->getPrefix(), _args[0]));
 }
 
 void Command::commandPASS(Client* client) //TODO kisat
@@ -130,67 +130,3 @@ void Command::commandPASS(Client* client) //TODO kisat
     // std::cout << "correct password" << std::endl;
     client->setPASS(password); //TODO indz petq a ardyoq ?
 }
-
-void Command::commandNICK(Client* client) //TODO inch piti ani?
-{
-    this->_args = client->getArguments();
-    if (_args.empty())
-    {
-        client->reply(ERR_NONICKNAMEGIVEN(client->getNICK()));
-        return ;
-    }
-    std::string nick = _args[0];
-
-    if (!nickCorrect(nick))
-    {
-        client->reply(ERR_ERRONEUSNICKNAME(client->getNICK(), nick));
-        return ;
-    }
-
-    if (!this->_server->checkNickname(nick))
-    {
-        client->reply(ERR_NICKNAMEINUSE(client->getNICK(), nick));
-        return ;
-    }
-
-    if (!client->checkForRegistered())
-    {
-        client->reply(ERR_NICKNAMEINUSE(client->getNICK(), nick));
-        return ;
-    }
-    client->setNICK(nick);
-}
-
-
-void Command::commandUSER(Client *client)
-{
-    if (client->isRegistered())
-    {
-        // client->reply(ERR_ALREADYREGISTERED(client->getNICK()));
-        return ;
-    }
-    if (_args.size() < 4)
-    {
-        // client->reply(ERR_NEEDMOREPARAMS(client->getNICK(), "USER"));
-        return ;
-    }
-    client->setUSER(_args[0], _args[3]);
-}
-
-// void Command::CommandJOIN(Client *client)
-// {
-//     if (!client->isRegistered())
-//     {
-//         // client->reply(ERR_NOTREGISTERED(client->getNICK()));
-//         return ;
-//     }
-
-//     if (_args.empty())
-//     {
-//         // client->reply(ERR_NEEDMOREPARAMS(client->getNICK(), "JOIN"));
-//         return ;
-//     }
-
-//     //eli inch vor baner :D
-    
-// }

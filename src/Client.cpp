@@ -41,7 +41,7 @@ bool Client::checkForRegistered(void)
 
 int Client::getFd(void)
 {
-    return ()
+    return (this->_fd);
 }
 
 void Client::setPASS(const std::string& pass)
@@ -231,13 +231,7 @@ std::string Client::getPrefix(void)
     return (prefix); 
 }
 
-// void Client::reply(const std::string& reply)
-// {
-//     std::string buff = ":" + this->getPrefix() + " " + reply + "\r\n";
 
-//     if (send(_fd, buff.c_str(), buff.length(), 0) == -1)
-//         std::cerr << "Error: can't send message to client." << std::endl;
-// }
 
 
 

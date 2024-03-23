@@ -8,8 +8,7 @@
 #include <sys/socket.h>
 #include <map>
 
-// #include "Command.hpp"
- #include "Numeric_and_error_replies.hpp"
+#include "Numeric_and_error_replies.hpp"
 
 class IRC_Server;
 class Channel;
@@ -42,6 +41,8 @@ class Client
         // void checkForRegistered(void);
         bool checkForRegistered(void);
         void splitbuffer(void);
+
+
 
         void setArguments(void);
         std::vector<std::string> getArguments(void);

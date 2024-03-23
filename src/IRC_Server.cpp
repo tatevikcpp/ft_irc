@@ -59,18 +59,13 @@ bool IRC_Server::checkNickname(const std::string& nick) //TODO  std::string offf
     return true;
 }
 
-void IRC_Server::changeNickname(Client *, const std::string& nick) //TODO strategia chka :D  
+void IRC_Server::changeNickname(Client *client, const std::string& newNick) //TODO strategia chka :D  
 {
-    std::map<std::string, int>::iterator it = this->_nickname.find(nick);
-    if (it != this->_nickname.end())
+    if (this->_clients.find(client->_fd) != this->_clients.end())
     {
-        this->_nickname[]
+        this->_clients[client->_fd]._nickname = newNick;
     }
-    else
-    {
-        std::cout << " arden ka ed nick-ov mard :D" << std::endl;
-        return ; 
-    }
+    //esle, esim ?
 }
 
 void IRC_Server::addChannel(Channel *channel)
@@ -247,7 +242,7 @@ int IRC_Server::start(void)
                    _select_fd != 0 && it != this->_clients.end() ; ++it)
             {
                 // std::cout << "loop" << std::endl;
-                if (FD_ISSET(it->first, &read_fds)) 
+                if (FD_ISSET(it->first, &read_fds))
                 {
                     _select_fd--;
                     // we got one!!
