@@ -53,10 +53,12 @@ class IRC_Server
         std::map<std::string, Channel *> _channels;
         std::map<int, Client *> _clients;
 
+        std::map<std::string, Command *> _commands;
+
         std::map<std::string, int> _nickname;
         int _select_fd;
         int _fdmax;
         int _listener;
         int _newfd;
-        Command* _command;
+        // Command* _command;
 };

@@ -1,6 +1,7 @@
 #include "IRC_Server.hpp"
 #include "utils.hpp"
 #include <fcntl.h>
+#include "Command.hpp"
 
 // #include <netinet/in.h>
 // struct in_addr
@@ -25,7 +26,23 @@ IRC_Server::IRC_Server(const char *port, const char *password)
     _s_addr.sin_port = htons(_port);
     _s_addr.sin_addr.s_addr = INADDR_ANY;
 
-    this->_command = new Command(this);
+    _commands["PASS"] = new Pass(this, false);
+    // _commands["NICK"] = new Nick(*this, false);
+    // _commands["USER"] = new User(*this, false);
+    // _commands["QUIT"] = new Quit(*this, false);
+
+    // _commands["PING"] = new Ping(*this);
+    // _commands["PONG"] = new Pong(*this);
+    // _commands["JOIN"] = new Join(*this);
+    // _commands["PART"] = new Part(*this);
+    // _commands["KICK"] = new Kick(*this);
+    // _commands["MODE"] = new Mode(*this);
+
+	// _commands["PRIVMSG"] = new PrivMsg(*this);
+	// _commands["NOTICE"] = new Notice(*this);
+
+    // this->_command = new Command(this);
+
 }
 
 IRC_Server::~IRC_Server(/* *this */)
@@ -63,7 +80,7 @@ void IRC_Server::changeNickname(Client *client, const std::string& newNick) //TO
 {
     if (this->_clients.find(client->_fd) != this->_clients.end())
     {
-        this->_clients[client->_fd]._nickname = newNick;
+        this->_clients[client->_fd]->setNICK(newNick);
     }
     //esle, esim ?
 }
@@ -267,27 +284,41 @@ int IRC_Server::start(void)
                     else
                     {
                         std::cout << "sending message" << std::endl;
-                        int i = 0;
-                        while(buf[i])
-                        {
-                            it->second->_buffer += buf[i];
-                            // std::cout << " it->second->_buffer "<< it->second->_buffer << std::endl;
-                            i++; 
-                        }
+                        it->second->_buffer = (buf); // TODO review
+                        // int i = 0;
+                        // while(buf[i])
+                        // {
+                        //     it->second->_buffer += buf[i];
+                        //     // std::cout << " it->second->_buffer "<< it->second->_buffer << std::endl;
+                        //     i++; 
+                        // }
 
                         if (it->second->_buffer.find('\n') != std::string::npos)
                         {
                             // it->second->setInputBuffer(it->second->_buffer);//TODO kaskaceli => veranayel
                             it->second->splitbuffer();
                             it->second->setArguments();
-                            while (!it->second->getArguments().empty() || !it->second->getCommand().empty())
+                            std::cout << it->second->getCommand() << std::endl;
+                            it->second->print_vector();
+                            if (it->second->getCommand().empty() == true)
                             {
-                                // std::cout << "face :D" << std::endl;
-                                this->_command->commandHandler(it->second);
-                                it->second->setArguments();
-                                // exit(1);
-                                // std::cout << "return " << std::endl;
+                                continue;
                             }
+                            std::cout << "it->second->getCommand() = " << it->second->getCommand() << std::endl;
+                            if (_commands.find(it->second->getCommand()) == _commands.end()) {
+                                std::cout << "ERR_UNKNOWNCOMMAND\n";
+                                it->second->reply(ERR_UNKNOWNCOMMAND(it->second->getNICK(), it->second->getCommand()));
+                                continue;
+                            }
+                            this->_commands[it->second->getCommand()]->execute(it->second, it->second->getArguments());
+                            // while (!it->second->getArguments().empty() || !it->second->getCommand().empty())
+                            // {
+                            //     // std::cout << "face :D" << std::endl;
+                            //     // this->_command->commandHandler(it->second);
+                            //     it->second->setArguments();
+                            //     // exit(1);
+                            //     // std::cout << "return " << std::endl;
+                            // }
 
                         }
 

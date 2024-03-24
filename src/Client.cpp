@@ -49,6 +49,11 @@ void Client::setPASS(const std::string& pass)
     this->_pass = pass;
 }
 
+std::string Client::getPASS(void)
+{
+    return (_pass);
+};
+
 void Client::setNICK(const std::string& nick) // TODO sending??
 {
     this->_nick = nick;
@@ -91,6 +96,42 @@ void Client::leaveChannel(const std::string& name)
 
 
 
+
+std::string     trim(const std::string& str)
+{
+    std::string WHITESPACE = " \n\r\t\f\v";
+    std::string result = "";
+
+    size_t  start = str.find_first_not_of(WHITESPACE);
+    if (start != std::string::npos)
+        result = str.substr(start);
+
+    size_t  end = result.find_last_not_of(WHITESPACE);
+    if (end != std::string::npos)
+        result = result.substr(0, end + 1);
+
+    return result;
+}
+
+
+
+std::vector<std::string> split(std::string s, std::string delimiter) 
+{
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    std::string token;
+    std::vector<std::string> res;
+
+    while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) 
+    {
+        token = s.substr (pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back (token);
+    }
+
+    res.push_back (s.substr (pos_start));
+    return res;
+}
+
 std::string Client::getCommand(void)
 {
     return (this->_command);
@@ -98,16 +139,20 @@ std::string Client::getCommand(void)
 
 void Client::setArguments(void)
 {
+    _arguments.clear();
+    _command.clear();
     if (!this->_vecBuffer.empty())
     {
         std::string str(this->_vecBuffer.front());
-        std::string delimiter = " ";
+        std::string delimiter = " "; // TODO avelacnel
         std::size_t end = 0;
         std::size_t i = 0;
 
         i = str.find(delimiter);
+        std::cout << "hajox\n";
         if (i != std::string::npos)
         {
+            std::cout << "barev\n";
             this->_command = str.substr(0, i);
             // std::cout << " his->_command = "<< this->_command << std::endl;
             str = str.substr(i);
@@ -230,6 +275,9 @@ std::string Client::getPrefix(void)
 
     return (prefix); 
 }
+
+
+
 
 
 
